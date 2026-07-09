@@ -293,6 +293,9 @@ class Request:
         self._data = None
         self.data = data
         self._tunnel_host = None
+        # Always present so handlers/redirects can read it before open()
+        # assigns the effective timeout (see gh-48329 / bpo-4079).
+        self.timeout = socket._GLOBAL_DEFAULT_TIMEOUT
         for key, value in headers.items():
             self.add_header(key, value)
         if origin_req_host is None:

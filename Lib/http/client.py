@@ -201,25 +201,17 @@ class HTTPMessage(email.message.Message):
     def getallmatchingheaders(self, name):
         """Find all header lines matching a given header name.
 
-        Look through the list of headers and find all lines matching a given
-        header name (and their continuation lines).  A list of the lines is
-        returned, without interpretation.  If the header does not occur, an
-        empty list is returned.  If the header occurs multiple times, all
-        occurrences are returned.  Case is not important in the header name.
+        Return a list of ``'Name: value'`` strings for every header whose name
+        matches *name* (case-insensitive).  If the header does not occur, an
+        empty list is returned.  If it occurs multiple times, all occurrences
+        are returned.
 
         """
-        name = name.lower() + ':'
-        n = len(name)
-        lst = []
-        hit = 0
-        for line in self.keys():
-            if line[:n].lower() == name:
-                hit = 1
-            elif not line[:1].isspace():
-                hit = 0
-            if hit:
-                lst.append(line)
-        return lst
+        # Header names from Message.items() do not include a trailing colon;
+        # match on the header name alone (case-insensitive).
+        name = name.lower()
+        return ['%s: %s' % (k, v) for k, v in self.items()
+                if k.lower() == name]
 
 def _read_headers(fp, max_headers):
     """Reads potential header lines into a list from a file pointer.

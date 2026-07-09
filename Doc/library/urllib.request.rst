@@ -579,6 +579,16 @@ request.
       A default value can now be set in subclasses; previously it could only
       be set via the constructor argument.
 
+.. attribute:: Request.timeout
+
+   A timeout in seconds for blocking operations associated with this request.
+   The default is the special value used by the :mod:`socket` module to mean
+   “use the global default timeout” (:data:`socket._GLOBAL_DEFAULT_TIMEOUT`).
+   :meth:`OpenerDirector.open` sets this attribute from its *timeout* argument
+   when the request is opened.
+
+   .. versionadded:: 3.16
+
 
 .. method:: Request.get_method()
 

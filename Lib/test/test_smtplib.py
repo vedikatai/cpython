@@ -104,6 +104,20 @@ class GeneralTests:
         self.assertEqual(client.local_hostname, "testhost")
         client.close()
 
+    def testLocalHostNameIPv6DomainLiteral(self):
+        # gh-47711 / bpo-3461: IPv6 fallback hostnames use [IPv6:...] literals
+        mock_socket.reply_with(b"220 Hola mundo")
+        with mock.patch.object(mock_socket, 'getfqdn', return_value='nodots'):
+            with mock.patch.object(mock_socket, 'gethostname',
+                                   return_value='ipv6-host'):
+                with mock.patch.object(
+                        mock_socket, 'getaddrinfo',
+                        return_value=[(None, None, None, None,
+                                       ('2001:db8::1', 0, 0, 0))]):
+                    client = self.client(HOST, self.port)
+        self.assertEqual(client.local_hostname, '[IPv6:2001:db8::1]')
+        client.close()
+
     def testTimeoutDefault(self):
         mock_socket.reply_with(b"220 Hola mundo")
         self.assertIsNone(mock_socket.getdefaulttimeout())

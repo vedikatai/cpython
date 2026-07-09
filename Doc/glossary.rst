@@ -645,26 +645,29 @@ Glossary
 
    generator
       Informally used to mean either a :term:`generator function` or a
-      :term:`generator iterator`, depending on context.  The formal terms
-      :term:`generator function` and :term:`generator iterator` are uncommon
-      in practice; "generator" alone is almost always sufficient.
+      :term:`generator iterator`, depending on context.  Prefer the formal
+      terms when the distinction matters: a *generator function* is the
+      definition (the callable that contains :keyword:`yield`); a *generator
+      iterator* (often just called a “generator”) is the object returned when
+      that function is called.  A :term:`generator expression` produces a
+      generator iterator without a named function.
 
       .. index:: single: generator function
 
    generator function
-      A function which returns a :term:`generator` object.  It looks like a
+      A function which returns a :term:`generator iterator`.  It looks like a
       normal function except that it contains :keyword:`yield` expressions
       for producing a series of values usable in a :keyword:`for`\-loop or
       that can be retrieved one at a time with the :func:`next` function.
-      See :ref:`yieldexpr`.
+      Calling a generator function does not execute its body immediately;
+      it returns a generator iterator.  See :ref:`yieldexpr`.
 
    generator iterator
-      An object created by a :term:`generator function` or a
-      :term:`generator expression`.
-
-      Each :keyword:`yield` temporarily suspends processing, remembering the
+      An object created by calling a :term:`generator function` or evaluating
+      a :term:`generator expression`.  It implements the :term:`iterator`
+      protocol and, when suspended at a :keyword:`yield`, remembers
       execution state (including local variables and pending try-statements).
-      When the *generator iterator* resumes, it picks up where it left off
+      When the generator iterator resumes, it picks up where it left off
       (in contrast to functions which start fresh on every invocation).
 
       Generator iterators also implement the :meth:`~generator.send` method
@@ -675,10 +678,10 @@ Glossary
       .. index:: single: generator expression
 
    generator expression
-      An :term:`expression` that returns an :term:`iterator`.  It looks like a normal expression
-      followed by a :keyword:`!for` clause defining a loop variable, range,
-      and an optional :keyword:`!if` clause.  The combined expression
-      generates values for an enclosing function::
+      An :term:`expression` that returns a :term:`generator iterator`.  It looks
+      like a normal expression followed by a :keyword:`!for` clause defining a
+      loop variable, range, and an optional :keyword:`!if` clause.  The combined
+      expression generates values for an enclosing function::
 
          >>> sum(i*i for i in range(10))         # sum of squares 0, 1, 4, ... 81
          285
@@ -1324,6 +1327,14 @@ Glossary
 
    provisional package
       See :term:`provisional API`.
+
+   public name
+      A name that is part of an API intended for use by callers outside the
+      defining module or package.  By convention, public names do not begin
+      with an underscore.  Modules may declare their public names in
+      :attr:`__all__`; if ``__all__`` is not defined, ``from module import *``
+      only imports names that do not start with an underscore.  See
+      :ref:`tut-modules` and :ref:`tut-pkg-import-star`.
 
    Python 3000
       Nickname for the Python 3.x release line (coined long ago when the

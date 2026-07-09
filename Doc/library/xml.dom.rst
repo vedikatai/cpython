@@ -690,6 +690,10 @@ Attr Objects
 
    The attribute name.
    In a namespace-using document it may include a colon.
+   Declared ``readonly`` in the DOM Level 2 IDL.  The Python DOM API does not
+   require implementations to reject assignment (see
+   :ref:`dom-accessor-methods`); :mod:`xml.dom.minidom` allows setting this
+   attribute.
 
 
 .. attribute:: Attr.localName
@@ -703,6 +707,9 @@ Attr Objects
 
    The part of the name preceding the colon if there is one, else the
    empty string.
+   Declared ``readonly`` in the DOM Level 2 IDL.  As with :attr:`Attr.name`,
+   implementations need not prevent assignment; :mod:`xml.dom.minidom` allows
+   setting this attribute.
 
 
 .. attribute:: Attr.value

@@ -135,6 +135,17 @@ class FakeSocketHTTPConnection(client.HTTPConnection):
         return FakeSocket(*self.fake_socket_args)
 
 class HeaderTests(TestCase):
+    def test_getallmatchingheaders(self):
+        # gh-49303 / bpo-5053: match header names from Message.keys()/items()
+        msg = client.HTTPMessage()
+        msg['Foo'] = 'bar'
+        msg['Foo'] = 'baz'
+        msg['Other'] = 'x'
+        matched = msg.getallmatchingheaders('foo')
+        self.assertEqual(len(matched), 2)
+        self.assertTrue(all(line.lower().startswith('foo:') for line in matched))
+        self.assertEqual(msg.getallmatchingheaders('missing'), [])
+
     def test_auto_headers(self):
         # Some headers are added automatically, but should not be added by
         # .request() if they are explicitly set.

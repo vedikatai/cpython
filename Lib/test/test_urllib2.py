@@ -2072,6 +2072,13 @@ class RequestTests(unittest.TestCase):
         self.assertEqual("PUT", self.put.get_method())
         self.assertEqual("POST", self.force_post.get_method())
 
+    def test_timeout_default(self):
+        # gh-48329 / bpo-4079: Request always exposes .timeout
+        import socket
+        req = Request("http://www.example.com/")
+        self.assertTrue(hasattr(req, "timeout"))
+        self.assertIs(req.timeout, socket._GLOBAL_DEFAULT_TIMEOUT)
+
     def test_data(self):
         self.assertFalse(self.get.data)
         self.assertEqual("GET", self.get.get_method())

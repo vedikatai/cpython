@@ -1,0 +1,4 @@
+:meth:`http.client.HTTPMessage.getallmatchingheaders` now correctly matches
+header names. It previously compared against names with a trailing colon while
+:meth:`~email.message.Message.keys` returns names without one, so it always
+returned an empty list.

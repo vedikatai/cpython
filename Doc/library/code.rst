@@ -109,7 +109,10 @@ Interactive Interpreter Objects
 
 .. method:: InteractiveInterpreter.runcode(code)
 
-   Execute a code object. When an exception occurs, :meth:`showtraceback` is called
+   Execute a code object.  Expression values produced in interactive
+   (``'single'``) mode are displayed by calling :func:`sys.displayhook`, the
+   same hook used by the standard interactive interpreter.  When an exception
+   occurs, :meth:`showtraceback` is called
    to display a traceback.  All exceptions are caught except :exc:`SystemExit`,
    which is allowed to propagate.
 

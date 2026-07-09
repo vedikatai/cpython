@@ -1,0 +1,2 @@
+Document a summary table mapping common :mod:`errno` values to concrete
+:exc:`OSError` subclasses in the exceptions documentation.

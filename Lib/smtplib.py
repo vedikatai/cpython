@@ -265,20 +265,33 @@ class SMTP:
         if local_hostname is not None:
             self.local_hostname = local_hostname
         else:
-            # RFC 2821 says we should use the fqdn in the EHLO/HELO verb, and
+            # RFC 5321 says we should use the fqdn in the EHLO/HELO verb, and
             # if that can't be calculated, that we should use a domain literal
-            # instead (essentially an encoded IP address like [A.B.C.D]).
+            # instead (IPv4 like [A.B.C.D], or IPv6 like [IPv6:addr]).
             fqdn = socket.getfqdn()
             if '.' in fqdn:
                 self.local_hostname = fqdn
             else:
-                # We can't find an fqdn hostname, so use a domain literal
+                # We can't find an fqdn hostname, so use a domain literal.
+                # Prefer an address for the local host (IPv4 or IPv6).
                 addr = '127.0.0.1'
-                try:
-                    addr = socket.gethostbyname(socket.gethostname())
-                except socket.gaierror:
-                    pass
-                self.local_hostname = '[%s]' % addr
+                host = socket.gethostname()
+                if host:
+                    try:
+                        infos = socket.getaddrinfo(
+                            host, None, type=socket.SOCK_STREAM)
+                        if infos:
+                            addr = infos[0][4][0]
+                    except (socket.gaierror, OSError, TypeError):
+                        try:
+                            addr = socket.gethostbyname(host)
+                        except (socket.gaierror, OSError, TypeError):
+                            pass
+                if isinstance(addr, str) and ':' in addr:
+                    # IPv6 domain literal per RFC 5321 section 4.1.3
+                    self.local_hostname = '[IPv6:%s]' % addr
+                else:
+                    self.local_hostname = '[%s]' % addr
 
     def __enter__(self):
         return self

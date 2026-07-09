@@ -736,6 +736,48 @@ OS exceptions
 The following exceptions are subclasses of :exc:`OSError`, they get raised
 depending on the system error code.
 
+The table below summarizes the most common mappings from :c:data:`errno`
+values to concrete :exc:`OSError` subclasses.  Platforms may raise
+:exc:`OSError` itself for other error codes.  See each exception's
+description for the full set of corresponding :c:data:`errno` constants.
+
++----------------------------------------+----------------------------------+
+| Exception                              | Typical :mod:`errno` constants   |
++========================================+==================================+
+| :exc:`BlockingIOError`                 | :py:const:`~errno.EAGAIN`,       |
+|                                        | :py:const:`~errno.EWOULDBLOCK`,  |
+|                                        | :py:const:`~errno.EALREADY`,     |
+|                                        | :py:const:`~errno.EINPROGRESS`   |
++----------------------------------------+----------------------------------+
+| :exc:`ChildProcessError`               | :py:const:`~errno.ECHILD`        |
++----------------------------------------+----------------------------------+
+| :exc:`ConnectionAbortedError`          | :py:const:`~errno.ECONNABORTED`  |
++----------------------------------------+----------------------------------+
+| :exc:`ConnectionRefusedError`          | :py:const:`~errno.ECONNREFUSED`  |
++----------------------------------------+----------------------------------+
+| :exc:`ConnectionResetError`            | :py:const:`~errno.ECONNRESET`    |
++----------------------------------------+----------------------------------+
+| :exc:`BrokenPipeError`                 | :py:const:`~errno.EPIPE`,        |
+|                                        | :py:const:`~errno.ESHUTDOWN`     |
++----------------------------------------+----------------------------------+
+| :exc:`FileExistsError`                 | :py:const:`~errno.EEXIST`        |
++----------------------------------------+----------------------------------+
+| :exc:`FileNotFoundError`               | :py:const:`~errno.ENOENT`        |
++----------------------------------------+----------------------------------+
+| :exc:`InterruptedError`                | :py:const:`~errno.EINTR`         |
++----------------------------------------+----------------------------------+
+| :exc:`IsADirectoryError`               | :py:const:`~errno.EISDIR`        |
++----------------------------------------+----------------------------------+
+| :exc:`NotADirectoryError`              | :py:const:`~errno.ENOTDIR`       |
++----------------------------------------+----------------------------------+
+| :exc:`PermissionError`                 | :py:const:`~errno.EACCES`,       |
+|                                        | :py:const:`~errno.EPERM`         |
++----------------------------------------+----------------------------------+
+| :exc:`ProcessLookupError`              | :py:const:`~errno.ESRCH`         |
++----------------------------------------+----------------------------------+
+| :exc:`TimeoutError`                    | :py:const:`~errno.ETIMEDOUT`     |
++----------------------------------------+----------------------------------+
+
 .. exception:: BlockingIOError
 
    Raised when an operation would block on an object (e.g. socket) set

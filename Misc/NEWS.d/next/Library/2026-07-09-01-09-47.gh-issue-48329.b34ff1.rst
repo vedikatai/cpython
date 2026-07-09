@@ -1,0 +1,4 @@
+:class:`urllib.request.Request` now always has a :attr:`~urllib.request.Request.timeout`
+attribute, defaulting to the socket module's global default timeout. Previously the
+attribute was only set when the request was opened, so code that inspected
+``Request.timeout`` before open could fail.

@@ -1,0 +1,3 @@
+When :class:`smtplib.SMTP` cannot determine an FQDN for the local host, the
+fallback domain literal for EHLO/HELO now formats IPv6 addresses as
+``[IPv6:...]`` per :rfc:`5321`, instead of the IPv4-only ``[addr]`` form.
